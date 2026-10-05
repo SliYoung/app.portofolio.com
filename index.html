@@ -184,8 +184,8 @@
     <div id="cms-view" class="hidden pt-16 h-screen flex flex-col md:flex-row overflow-hidden bg-slate-950">
         <!-- Sidebar Editor Form (Left Panel) -->
         <div class="w-full md:w-1/2 lg:w-5/12 h-full flex flex-col border-r border-slate-800 bg-slate-900">
-            <div class="p-4 border-b border-slate-800 bg-slate-900/50">
-                <div class="flex items-center justify-between mb-3">
+            <div class="p-4 border-b border-slate-800 bg-slate-900/50 space-y-3">
+                <div class="flex items-center justify-between">
                     <h2 class="font-semibold text-sky-400 flex items-center gap-2">
                         <i class="fa-solid fa-sliders"></i> Content Manager
                     </h2>
@@ -193,6 +193,18 @@
                         <i class="fa-solid fa-rotate-left mr-1"></i> Reset Data
                     </button>
                 </div>
+
+                <!-- Export & Import Controls -->
+                <div class="flex gap-2">
+                    <button onclick="exportJSONData()" class="flex-1 text-xs bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 py-1.5 px-3 rounded-lg font-medium transition-all flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-download"></i> Export JSON
+                    </button>
+                    <label class="flex-1 text-xs bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 py-1.5 px-3 rounded-lg font-medium transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                        <i class="fa-solid fa-upload"></i> Import JSON
+                        <input type="file" id="json-file-input" accept=".json" onchange="importJSONData(event)" class="hidden">
+                    </label>
+                </div>
+
                 <!-- Editor Tabs -->
                 <div class="grid grid-cols-6 gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-[10px] sm:text-[11px]">
                     <button onclick="switchTab('tab-profile')" id="btn-tab-profile" class="cms-tab-btn py-2 rounded-lg font-medium text-center transition-all bg-sky-500/20 text-sky-400 border border-sky-500/30">Profil</button>
@@ -668,13 +680,48 @@
             renderCertificationCMSList();
         }
 
-        // Helper fungsi toggle edit mode
+        // Toggle edit mode helper
         function toggleEdit(type, index) {
             editingState[type] = editingState[type] === index ? null : index;
             if (type === 'education') renderEducationCMSList();
             if (type === 'projects') renderProjectCMSList();
             if (type === 'experiences') renderExperienceCMSList();
             if (type === 'certifications') renderCertificationCMSList();
+        }
+
+        // ---------------- EXPORT & IMPORT JSON ----------------
+        function exportJSONData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 4));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "portfolio-data.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function importJSONData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsedData = JSON.parse(e.target.result);
+                    if (parsedData && typeof parsedData === 'object' && parsedData.profile) {
+                        appData = parsedData;
+                        saveAndSync();
+                        populateCMSForms();
+                        alert("Data JSON berhasil diimpor!");
+                    } else {
+                        alert("Format JSON tidak valid atau tidak sesuai struktur data portofolio.");
+                    }
+                } catch (err) {
+                    alert("Gagal membaca file JSON: " + err.message);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
         }
 
         // ---------------- EDUCATION ----------------
