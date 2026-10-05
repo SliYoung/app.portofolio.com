@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio & CMS Studio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        darkbg: '#0f172a',
+                        darkcard: '#1e293b',
+                        neonblue: '#38bdf8',
+                        neonpurple: '#8b5cf6',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+        /* Gradient text effect */
+        .text-gradient {
+            background: linear-gradient(135deg, #38bdf8 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glow-effect {
+            box-shadow: 0 0 25px -5px rgba(56, 189, 248, 0.25);
+        }
+        .glow-purple {
+            box-shadow: 0 0 25px -5px rgba(139, 92, 246, 0.25);
+        }
+
+
+        /* Responsive layout: phone, tablet, and laptop */
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 7rem; }
+        img, video, iframe { max-width: 100%; }
+        input, textarea, select, button { max-width: 100%; }
+        input, textarea, select { min-width: 0; }
+        #portfolio-view section { min-width: 0; }
+        #portfolio-view p, #portfolio-view a, #portfolio-view h1,
+        #portfolio-view h2, #portfolio-view h3 { overflow-wrap: anywhere; }
+
+        @media (max-width: 767px) {
+            nav.fixed {
+                padding: .65rem .75rem;
+                gap: .5rem;
+                align-items: center;
+            }
+            nav.fixed > div:first-child { min-width: 0; gap: .5rem; }
+            nav.fixed > div:last-child { min-width: 0; }
+            nav.fixed button { padding: .5rem .55rem !important; font-size: .7rem; line-height: 1.25; }
+            nav.fixed button i { margin-right: .2rem !important; }
+
+            #cms-view:not(.hidden) {
+                height: calc(100dvh - 3.8rem) !important;
+                min-height: 0;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                flex-direction: column;
+            }
+            #cms-view > div:first-child {
+                width: 100% !important;
+                height: auto !important;
+                min-height: calc(100dvh - 3.8rem);
+                flex: 0 0 auto;
+                border-right: 0 !important;
+                border-bottom: 1px solid #1e293b;
+            }
+            #cms-view > div:first-child > div:first-child { padding: .8rem; }
+            #cms-view .cms-tab-btn { min-width: 0; padding: .6rem .2rem !important; font-size: .68rem; line-height: 1.25; overflow-wrap: anywhere; }
+            #cms-view .grid.grid-cols-6 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            #cms-view .flex-1.overflow-y-auto { overflow: visible; padding: .85rem; }
+            #cms-view input, #cms-view textarea { font-size: 16px; }
+
+            #portfolio-view { padding-top: 3.8rem; }
+            #portfolio-view > header {
+                top: 3.8rem;
+                padding: .65rem .5rem;
+            }
+            #portfolio-view > header > div { gap: .55rem .9rem; font-size: .75rem; }
+            #portfolio-view section { padding-left: 1rem; padding-right: 1rem; }
+            #about { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+            #view-name { font-size: clamp(1.65rem, 7vw, 2.4rem); line-height: 1.2; }
+            #view-title { font-size: 1rem; }
+            #view-bio { font-size: .9rem; }
+            #view-socials { flex-wrap: wrap; justify-content: center; }
+            #contact .grid, #projects .grid, #experience .grid,
+            #certifications .grid, #skills .grid { grid-template-columns: minmax(0, 1fr); }
+            #portfolio-view .p-6 { padding: 1rem; }
+        }
+
+        @media (max-width: 380px) {
+            nav.fixed { padding-left: .5rem; padding-right: .5rem; }
+            nav.fixed .rounded-xl { width: 2rem; height: 2rem; flex: 0 0 2rem; }
+            nav.fixed button { padding: .45rem .4rem !important; font-size: .64rem; }
+            #portfolio-view > header > div { gap: .5rem .7rem; font-size: .7rem; }
+            #cms-view .cms-tab-btn { font-size: .63rem; }
+        }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+            #cms-view > div:first-child { width: 48%; }
+            #cms-view > div:nth-child(2) { width: 52%; padding: 1rem; }
+            #cms-view .cms-tab-btn { font-size: .65rem; }
+        }
+
+
+        /* CMS Theme Color Customizer */
+        :root {
+            --theme-primary: #38bdf8;
+            --theme-secondary: #8b5cf6;
+            --theme-primary-rgb: 56, 189, 248;
+        }
+        #portfolio-view .text-sky-400, #portfolio-view .text-sky-500,
+        #cms-view .text-sky-400, #cms-view .text-sky-500 { color: var(--theme-primary) !important; }
+        #portfolio-view .bg-sky-500, #cms-view .bg-sky-500 { background-color: var(--theme-primary) !important; }
+        #portfolio-view .border-sky-500, #cms-view .border-sky-500 { border-color: var(--theme-primary) !important; }
+        #portfolio-view .border-sky-500\\/30, #cms-view .border-sky-500\\/30 { border-color: rgba(var(--theme-primary-rgb), .3) !important; }
+        #portfolio-view .bg-sky-500\\/10, #cms-view .bg-sky-500\\/10 { background-color: rgba(var(--theme-primary-rgb), .1) !important; }
+        #portfolio-view .bg-sky-500\\/20, #cms-view .bg-sky-500\\/20 { background-color: rgba(var(--theme-primary-rgb), .2) !important; }
+        #portfolio-view .from-sky-500 { --tw-gradient-from: var(--theme-primary) var(--tw-gradient-from-position) !important; --tw-gradient-to: rgba(var(--theme-primary-rgb), 0) var(--tw-gradient-to-position) !important; }
+        #portfolio-view .to-purple-600 { --tw-gradient-to: var(--theme-secondary) var(--tw-gradient-to-position) !important; }
+        #portfolio-view .text-gradient {
+            background-image: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-secondary) 100%) !important;
+        }
+        #portfolio-view .glow-effect { box-shadow: 0 0 25px -5px rgba(var(--theme-primary-rgb), .25) !important; }
+        .cms-theme-panel { border: 1px solid #334155; border-radius: .75rem; padding: .75rem; margin-top: .75rem; background: rgba(2, 6, 23, .55); }
+        .cms-theme-option { display: flex; align-items: center; justify-content: center; gap: .35rem; border: 1px solid #475569; border-radius: .55rem; padding: .45rem .25rem; font-size: .7rem; color: #e2e8f0; transition: .15s ease; }
+        .cms-theme-option[aria-pressed="true"] { border-color: var(--theme-primary); box-shadow: 0 0 0 1px var(--theme-primary); background: rgba(var(--theme-primary-rgb), .12); }
+        .cms-theme-dot { width: .7rem; height: .7rem; display: inline-block; border-radius: 999px; flex: 0 0 .7rem; }
+
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Top Navigation Bar -->
+    <nav class="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 fixed top-0 w-full z-50 px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-purple-600 flex items-center justify-center font-bold text-xl shadow-lg">
+                P
+            </div>
+            <span class="font-bold text-lg tracking-wide text-white hidden sm:inline">Portfolio<span class="text-sky-400">Studio</span></span>
+        </div>
+
+        <!-- Mode Toggle & Navigation Links -->
+        <div class="flex items-center space-x-2 sm:space-x-6">
+            <div class="flex bg-slate-800 p-1 rounded-lg border border-slate-700 text-xs sm:text-sm">
+                <button id="nav-home-btn" onclick="setViewMode('portfolio')" class="px-3 py-1.5 rounded-md font-medium transition-all duration-200 bg-sky-500 text-white shadow-sm">
+                    <i class="fa-solid fa-globe mr-1.5"></i> Live Website
+                </button>
+                <button id="nav-cms-btn" onclick="setViewMode('cms')" class="px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition-all duration-200">
+                    <i class="fa-solid fa-pen-to-square mr-1.5"></i> CMS Dashboard
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CMS DASHBOARD VIEW (Split Screen Editor & Live Preview) -->
+    <div id="cms-view" class="hidden pt-16 h-screen flex flex-col md:flex-row overflow-hidden bg-slate-950">
+        <!-- Sidebar Editor Form (Left Panel) -->
+        <div class="w-full md:w-1/2 lg:w-5/12 h-full flex flex-col border-r border-slate-800 bg-slate-900">
+            <!-- Sidebar Header & Tab Selectors -->
+            <div class="p-4 border-b border-slate-800 bg-slate-900/50">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="font-semibold text-sky-400 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders"></i> Content Manager
+                    </h2>
+                    <button onclick="resetData()" class="text-xs bg-red-500/10 hover:bg-red-500/20 text-red-400 px-2.5 py-1 rounded border border-red-500/20 transition-all">
+                        <i class="fa-solid fa-rotate-left mr-1"></i> Reset Data
+                    </button>
+                </div>
+                <!-- Editor Tabs -->
+                <div class="grid grid-cols-6 gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-[10px] sm:text-[11px]">
+                    <button onclick="switchTab('tab-profile')" id="btn-tab-profile" class="cms-tab-btn py-2 rounded-lg font-medium text-center transition-all bg-sky-500/20 text-sky-400 border border-sky-500/30">Profil</button>
+                    <button onclick="switchTab('tab-education')" id="btn-tab-education" class="cms-tab-btn py-2 rounded-lg font-medium text-center text-slate-400 hover:text-white transition-all">Pendidikan</button>
+                    <button onclick="switchTab('tab-project')" id="btn-tab-project" class="cms-tab-btn py-2 rounded-lg font-medium text-center text-slate-400 hover:text-white transition-all">Proyek</button>
+                    <button onclick="switchTab('tab-exp')" id="btn-tab-exp" class="cms-tab-btn py-2 rounded-lg font-medium text-center text-slate-400 hover:text-white transition-all">Pengalaman</button>
+                    <button onclick="switchTab('tab-cert')" id="btn-tab-cert" class="cms-tab-btn py-2 rounded-lg font-medium text-center text-slate-400 hover:text-white transition-all">Sertifikat</button>
+                    <button onclick="switchTab('tab-contact')" id="btn-tab-contact" class="cms-tab-btn py-2 rounded-lg font-medium text-center text-slate-400 hover:text-white transition-all">Kontak</button>
+                </div>
+                <div class="cms-theme-panel">
+                    <div class="flex items-center justify-between gap-2 mb-2">
+                        <span class="text-xs font-semibold text-slate-200"><i class="fa-solid fa-palette mr-1.5"></i>Warna Tema Website</span>
+                        <span id="cms-theme-label" class="text-[10px] text-slate-400">Biru Langit</span>
+                    </div>
+                    <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                        <button type="button" class="cms-theme-option" data-theme="blue" onclick="setThemeColor('blue')" aria-pressed="true"><span class="cms-theme-dot" style="background:#38bdf8"></span>Biru</button>
+                        <button type="button" class="cms-theme-option" data-theme="purple" onclick="setThemeColor('purple')" aria-pressed="false"><span class="cms-theme-dot" style="background:#a78bfa"></span>Ungu</button>
+                        <button type="button" class="cms-theme-option" data-theme="green" onclick="setThemeColor('green')" aria-pressed="false"><span class="cms-theme-dot" style="background:#34d399"></span>Hijau</button>
+                        <button type="button" class="cms-theme-option" data-theme="red" onclick="setThemeColor('red')" aria-pressed="false"><span class="cms-theme-dot" style="background:#fb7185"></span>Merah</button>
+                        <button type="button" class="cms-theme-option" data-theme="orange" onclick="setThemeColor('orange')" aria-pressed="false"><span class="cms-theme-dot" style="background:#fb923c"></span>Oranye</button>
+                        <button type="button" class="cms-theme-option" data-theme="pink" onclick="setThemeColor('pink')" aria-pressed="false"><span class="cms-theme-dot" style="background:#f472b6"></span>Pink</button>
+                    </div>
+                    <p class="text-[10px] text-slate-500 mt-2">Pilih warna untuk mengubah aksen pada website dan dashboard. Pilihan tersimpan otomatis di browser ini.</p>
+                </div>
+            </div>
+
+            <!-- Scrollable Editor Form Content -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-6">
+                <!-- TAB 1: PROFIL -->
+                <div id="tab-profile" class="cms-tab-content space-y-4">
+                    <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Informasi Diri</h3>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Nama Lengkap</label>
+                        <input type="text" id="cms-name" oninput="updateData()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-white focus:border-sky-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Gelar / Posisi Utama</label>
+                        <input type="text" id="cms-title" oninput="updateData()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-white focus:border-sky-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">URL Foto Profil</label>
+                        <input type="text" id="cms-avatar" oninput="updateData()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-white focus:border-sky-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Bio / Deskripsi Profil</label>
+                        <textarea id="cms-bio" rows="4" oninput="updateData()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-white focus:border-sky-500 focus:outline-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Keahlian (Dipisah koma)</label>
+                        <textarea id="cms-skills" rows="3" oninput="updateData()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-white focus:border-sky-500 focus:outline-none" placeholder="UI/UX, Web Dev, React, Node.js"></textarea>
+                    </div>
+                </div>
+
+                <!-- TAB 2: PENDIDIKAN -->
+                <div id="tab-education" class="cms-tab-content hidden space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Riwayat Pendidikan</h3>
+                        <button onclick="addEducationItem()" class="text-xs bg-sky-500 hover:bg-sky-600 text-white px-2.5 py-1 rounded-lg transition-all">
+                            <i class="fa-solid fa-plus mr-1"></i> Tambah
+                        </button>
+                    </div>
+                    <div id="cms-education-list" class="space-y-4">
+                        <!-- Education items generated dynamically -->
+                    </div>
+                </div>
+
+                <!-- TAB 3: PROYEK -->
+                <div id="tab-project" class="cms-tab-content hidden space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Daftar Proyek</h3>
+                        <button onclick="addProjectItem()" class="text-xs bg-sky-500 hover:bg-sky-600 text-white px-2.5 py-1 rounded-lg transition-all">
+                            <i class="fa-solid fa-plus mr-1"></i> Tambah Proyek
+                        </button>
+                    </div>
+                    <div id="cms-project-list" class="space-y-4">
+                        <!-- Project items generated dynamically -->
+                    </div>
+                </div>
+
+                <!-- TAB 4: PENGALAMAN -->
+                <div id="tab-exp" class="cms-tab-content hidden space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Daftar Pengalaman Kerja</h3>
+                        <button onclick="addExperienceItem()" class="text-xs bg-sky-500 hover:bg-sky-600 text-white px-2.5 py-1 rounded-lg transition-all">
+                            <i class="fa-solid fa-plus mr-1"></i> Tambah
+                        </button>
+                    </div>
+                    <div id="cms-experience-list" class="space-y-4">
+                        <!-- Experience Items generated dynamically -->
+                    </div>
+                </div>
+
+                <!-- TAB 5: SERTIFIKASI -->
+                <div id="tab-cert" class="cms-tab-content hidden space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Daftar Sertifikasi</h3>
+                        <button onclick="addCertItem()" class="text-xs bg-purple-600 hover:bg-purple-700 text-white px-2.5 py-1 rounded-lg transition-all">
+                            <i class="fa-solid fa-plus mr-1"></i> Tambah
+                        </button>
+                    </div>
+                    <div id="cms-cert-list" class="space-y-4">
+                        <!-- Certification Items generated dynamically -->
+                    </div>
+                </div>
+
+                <!-- TAB 6: KONTAK & MEDSOS -->
+                <div id="tab-contact" class="cms-tab-content hidden space-y-4">
+                    <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Informasi Kontak & Media Sosial</h3>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Email</label>
+                        <input type="email" id="cms-email" oninput="updateContactData()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-white focus:border-sky-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Nomor Telepon/WhatsApp</label>
+                        <input type="text" id="cms-phone" oninput="updateContactData()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-white focus:border-sky-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Lokasi / Kota</label>
+                        <input type="text" id="cms-location" oninput="updateContactData()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-white focus:border-sky-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">URL GitHub</label>
+                        <input type="text" id="cms-github" oninput="updateContactData()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-white focus:border-sky-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">URL LinkedIn</label>
+                        <input type="text" id="cms-linkedin" oninput="updateContactData()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-white focus:border-sky-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">URL Instagram</label>
+                        <input type="text" id="cms-instagram" oninput="updateContactData()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-white focus:border-sky-500 focus:outline-none">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Split-Screen Preview (Right Panel) -->
+        <div class="hidden md:block md:w-1/2 lg:w-7/12 h-full bg-slate-950 p-6 overflow-y-auto">
+            <div class="max-w-xl mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <span class="text-xs text-sky-400 font-mono flex items-center gap-1.5"><i class="fa-solid fa-eye"></i> Real-time Preview</span>
+                    <span class="text-xs text-slate-500">Mode Pratinjau CMS</span>
+                </div>
+                <!-- Preview Content Component Mini Container -->
+                <div id="preview-container" class="space-y-6">
+                    <!-- Dynamic rendering in split view -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PORTFOLIO MAIN PUBLIC VIEW -->
+    <div id="portfolio-view" class="pt-16 flex-1 flex flex-col">
+        <!-- Main Navbar Links for Portfolio View -->
+        <header class="sticky top-16 z-40 bg-slate-900/60 backdrop-blur-md border-b border-slate-800/80 px-4 py-2">
+            <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-4 text-sm font-medium">
+                <a href="#about" class="text-slate-300 hover:text-sky-400 transition-colors">Tentang</a>
+                <a href="#education" class="text-slate-300 hover:text-sky-400 transition-colors">Pendidikan</a>
+                <a href="#projects" class="text-slate-300 hover:text-sky-400 transition-colors">Proyek</a>
+                <a href="#experience" class="text-slate-300 hover:text-sky-400 transition-colors">Pengalaman</a>
+                <a href="#certifications" class="text-slate-300 hover:text-sky-400 transition-colors">Sertifikasi</a>
+                <a href="#skills" class="text-slate-300 hover:text-sky-400 transition-colors">Keahlian</a>
+                <a href="#contact" class="text-slate-300 hover:text-sky-400 transition-colors">Kontak</a>
+            </div>
+        </header>
+
+        <!-- Hero / Profile Section -->
+        <section id="about" class="py-16 px-4 max-w-5xl mx-auto text-center flex flex-col items-center">
+            <div class="relative mb-6 group">
+                <div class="absolute -inset-1 bg-gradient-to-r from-sky-500 to-purple-600 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                <img id="view-avatar" src="" alt="Avatar" class="relative w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-2 border-slate-800 shadow-2xl">
+            </div>
+            <h1 id="view-name" class="text-3xl md:text-5xl font-extrabold tracking-tight mb-2"></h1>
+            <p id="view-title" class="text-lg md:text-xl text-sky-400 font-medium mb-4"></p>
+            <p id="view-bio" class="text-slate-400 max-w-2xl mx-auto leading-relaxed text-sm md:text-base mb-6"></p>
+            
+            <!-- Quick Social Media Links -->
+            <div id="view-socials" class="flex items-center space-x-4 mb-4">
+                <!-- Social Icons rendered dynamically -->
+            </div>
+        </section>
+
+        <!-- Education Section (Riwayat Pendidikan) -->
+        <section id="education" class="py-12 bg-slate-900/30 border-t border-slate-800/80 px-4">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Riwayat Pendidikan</h2>
+                    <p class="text-slate-400 text-sm">Latar belakang akademis dan pendidikan formal yang telah saya tempuh.</p>
+                </div>
+                <div id="view-education-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Dynamic Education Cards -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section (Proyek) -->
+        <section id="projects" class="py-12 bg-slate-900/60 border-t border-slate-800/80 px-4">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Proyek Unggulan</h2>
+                    <p class="text-slate-400 text-sm">Beberapa karya dan aplikasi terkemuka yang telah saya kembangkan.</p>
+                </div>
+                <div id="view-projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Dynamic Project Cards -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section (Pengalaman Kerja) -->
+        <section id="experience" class="py-12 bg-slate-900/30 border-t border-slate-800/80 px-4">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Pengalaman Kerja</h2>
+                    <p class="text-slate-400 text-sm">Rekam jejak karir dan kontribusi profesional saya.</p>
+                </div>
+                
+                <!-- Timeline Grid -->
+                <div id="view-experience-list" class="space-y-6">
+                    <!-- Dynamic Experience Cards -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications Section (Sertifikasi) -->
+        <section id="certifications" class="py-12 border-t border-slate-800/80 px-4">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Sertifikasi & Lisensi</h2>
+                    <p class="text-slate-400 text-sm">Sertifikat resmi dan kualifikasi profesional yang saya miliki.</p>
+                </div>
+
+                <!-- Certifications Grid -->
+                <div id="view-certifications-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Dynamic Certification Cards -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-12 bg-slate-900/50 border-t border-slate-800/80 px-4">
+            <div class="max-w-5xl mx-auto text-center">
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-6">Keahlian Utama</h2>
+                <div id="view-skills-list" class="flex flex-wrap justify-center gap-2 max-w-3xl mx-auto">
+                    <!-- Dynamic Skill Badges -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section (Kontak & Pesan) -->
+        <section id="contact" class="py-16 px-4 bg-slate-950 border-t border-slate-800">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Hubungi Saya</h2>
+                    <p class="text-slate-400 text-sm">Tertarik bekerja sama atau ingin bertanya? Kirimkan pesan di bawah ini.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                    <!-- Contact Details Info -->
+                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-6">
+                        <h3 class="text-lg font-bold text-white">Informasi Kontak</h3>
+                        <div class="space-y-4 text-sm">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-400">Email</p>
+                                    <p id="view-contact-email" class="font-medium text-white"></p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-400">Telepon / WhatsApp</p>
+                                    <p id="view-contact-phone" class="font-medium text-white"></p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-400">Lokasi</p>
+                                    <p id="view-contact-location" class="font-medium text-white"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Contact Form -->
+                    <form onsubmit="handleContactSubmit(event)" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+                        <h3 class="text-lg font-bold text-white mb-2">Kirim Pesan</h3>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">Nama Anda</label>
+                            <input type="text" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-white focus:border-sky-500 focus:outline-none" placeholder="Masukkan nama...">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">Email Anda</label>
+                            <input type="email" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-white focus:border-sky-500 focus:outline-none" placeholder="nama@email.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">Pesan</label>
+                            <textarea rows="4" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-white focus:border-sky-500 focus:outline-none" placeholder="Tuliskan pesan Anda..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-medium py-2.5 rounded-lg transition-all shadow-lg flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Kirim Pesan
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-auto border-t border-slate-800 py-6 text-center text-slate-500 text-xs">
+            <p>&copy; 2026 Interactive CMS Portfolio Studio. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Initial Default Data
+        const initialData = {
+            profile: {
+                name: "Rizky Ramadhan",
+                title: "Senior Full-Stack Developer & UI/UX Specialist",
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400",
+                bio: "Pengembang web yang berdedikasi menciptakan pengalaman digital intuitif, berperforma tinggi, dan estetis. Berpengalaman memimpin tim serta membangun aplikasi berskala besar."
+            },
+            contact: {
+                email: "rizky.ramadhan@example.com",
+                phone: "+62 812 3456 7890",
+                location: "Jakarta, Indonesia",
+                github: "https://github.com",
+                linkedin: "https://linkedin.com",
+                instagram: "https://instagram.com"
+            },
+            education: [
+                {
+                    id: 1,
+                    institution: "Universitas Indonesia",
+                    degree: "S1 Teknik Informatika",
+                    period: "2017 - 2021",
+                    gpa: "IPK 3.85 / 4.00",
+                    description: "Fokus pada Rekayasa Perangkat Lunak dan Kecerdasan Buatan. Aktif dalam organisasi mahasiswa dan kompetisi pemrograman.",
+                    logo: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&q=80&w=400"
+                },
+                {
+                    id: 2,
+                    institution: "SMA Negeri 1 Jakarta",
+                    degree: "MIPA",
+                    period: "2014 - 2017",
+                    gpa: "Lulusan Terbaik",
+                    description: "Ketiga dalam Olimpiade Sains Nasional tingkat kota bidang Komputer dan Sains Informasi.",
+                    logo: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=400"
+                }
+            ],
+            projects: [
+                {
+                    id: 1,
+                    title: "SaaS Dashboard Management",
+                    category: "Web Application",
+                    tech: "React, Tailwind, Node.js",
+                    description: "Platform analitik bisnis real-time yang memvisualisasikan performa penjualan dengan chart interaktif dan sistem otentikasi aman.",
+                    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=600",
+                    link: "#"
+                },
+                {
+                    id: 2,
+                    title: "E-Commerce Mobile App",
+                    category: "Mobile Design & Dev",
+                    tech: "Flutter, Firebase, Stripe",
+                    description: "Aplikasi belanja online serba cepat dilengkapi integrasi gateway pembayaran, pencarian pintar, dan pelacakan pesanan real-time.",
+                    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=600",
+                    link: "#"
+                }
+            ],
+            experiences: [
+                {
+                    id: 1,
+                    role: "Lead Frontend Engineer",
+                    company: "TechNova Solutions",
+                    period: "2023 - Sekarang",
+                    description: "Memimpin tim frontend dalam mengembangkan arsitektur cloud bertrafik tinggi, meningkatkan performa sistem sebesar 40%, serta mengimplementasikan standar UI/UX modern.",
+                    logo: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=150"
+                },
+                {
+                    id: 2,
+                    role: "Full-Stack Developer",
+                    company: "Digital Karya Studio",
+                    period: "2021 - 2023",
+                    description: "Mengembangkan lebih dari 15 web dinamis, mengintegrasikan sistem pembayaran REST API, serta memelihara basis data MongoDB & PostgreSQL.",
+                    logo: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=150"
+                }
+            ],
+            certifications: [
+                {
+                    id: 1,
+                    title: "AWS Certified Solutions Architect",
+                    issuer: "Amazon Web Services",
+                    date: "Nov 2024",
+                    certId: "AWS-8923412",
+                    image: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?auto=format&fit=crop&q=80&w=400"
+                },
+                {
+                    id: 2,
+                    title: "Professional Scrum Master I (PSM I)",
+                    issuer: "Scrum.org",
+                    date: "Agu 2023",
+                    certId: "SCRUM-551029",
+                    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=400"
+                }
+            ],
+            skills: ["JavaScript (ES6+)", "React.js", "Tailwind CSS", "Node.js", "TypeScript", "Python", "Docker", "UI/UX Design"]
+        };
+
+        let appData = JSON.parse(localStorage.getItem('portfolio_cms_data')) || initialData;
+
+        // Tema warna yang dapat dipilih dari CMS Dashboard.
+        const CMS_THEMES = {
+            blue:   { label: 'Biru Langit', primary: '#38bdf8', secondary: '#8b5cf6', rgb: '56, 189, 248' },
+            purple: { label: 'Ungu',       primary: '#a78bfa', secondary: '#ec4899', rgb: '167, 139, 250' },
+            green:  { label: 'Hijau',      primary: '#34d399', secondary: '#06b6d4', rgb: '52, 211, 153' },
+            red:    { label: 'Merah',      primary: '#fb7185', secondary: '#f97316', rgb: '251, 113, 133' },
+            orange: { label: 'Oranye',     primary: '#fb923c', secondary: '#facc15', rgb: '251, 146, 60' },
+            pink:   { label: 'Pink',       primary: '#f472b6', secondary: '#c084fc', rgb: '244, 114, 182' }
+        };
+
+        function setThemeColor(themeName) {
+            const theme = CMS_THEMES[themeName] || CMS_THEMES.blue;
+            const root = document.documentElement;
+            root.style.setProperty('--theme-primary', theme.primary);
+            root.style.setProperty('--theme-secondary', theme.secondary);
+            root.style.setProperty('--theme-primary-rgb', theme.rgb);
+            localStorage.setItem('portfolio_cms_theme', themeName);
+
+            document.querySelectorAll('.cms-theme-option').forEach(button => {
+                button.setAttribute('aria-pressed', button.dataset.theme === themeName ? 'true' : 'false');
+            });
+            const label = document.getElementById('cms-theme-label');
+            if (label) label.textContent = theme.label;
+            const logo = document.querySelector('nav.fixed .bg-gradient-to-tr');
+            if (logo) logo.style.backgroundImage = `linear-gradient(45deg, ${theme.primary}, ${theme.secondary})`;
+        }
+
+        // Initialize Page
+        window.onload = function() {
+            setThemeColor(localStorage.getItem('portfolio_cms_theme') || 'blue');
+            populateCMSForms();
+            renderPortfolio();
+        };
+
+        // CMS login protection (client-side only; use server authentication for real security)
+        const CMS_PASSWORD = "Admin123!"; // Ganti dengan sandi yang Anda inginkan
+        let cmsUnlocked = false;
+
+        function setViewMode(mode) {
+            if (mode === 'cms' && !cmsUnlocked) {
+                const entered = prompt("Masukkan sandi untuk membuka CMS Dashboard:");
+                if (entered === null) return;
+                if (entered !== CMS_PASSWORD) {
+                    alert("Sandi salah. Akses CMS ditolak.");
+                    return;
+                }
+                cmsUnlocked = true;
+            }
+
+            const cmsView = document.getElementById('cms-view');
+            const portfolioView = document.getElementById('portfolio-view');
+            const cmsBtn = document.getElementById('nav-cms-btn');
+            const homeBtn = document.getElementById('nav-home-btn');
+
+            if (mode === 'cms') {
+                cmsView.classList.remove('hidden');
+                portfolioView.classList.add('hidden');
+                cmsBtn.className = "px-3 py-1.5 rounded-md font-medium transition-all duration-200 bg-sky-500 text-white shadow-sm";
+                homeBtn.className = "px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition-all duration-200";
+                renderSplitPreview();
+            } else {
+                cmsView.classList.add('hidden');
+                portfolioView.classList.remove('hidden');
+                homeBtn.className = "px-3 py-1.5 rounded-md font-medium transition-all duration-200 bg-sky-500 text-white shadow-sm";
+                cmsBtn.className = "px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition-all duration-200";
+            }
+        }
+
+        // Switch Tabs in CMS Editor Sidebar
+        function switchTab(tabId) {
+            document.querySelectorAll('.cms-tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.cms-tab-btn').forEach(el => {
+                el.className = "cms-tab-btn py-2 rounded-lg font-medium text-center text-slate-400 hover:text-white transition-all";
+            });
+
+            document.getElementById(tabId).classList.remove('hidden');
+            const btn = document.getElementById('btn-' + tabId);
+            btn.className = "cms-tab-btn py-2 rounded-lg font-medium text-center transition-all bg-sky-500/20 text-sky-400 border border-sky-500/30";
+        }
+
+        // Populate Forms with Data
+        function populateCMSForms() {
+            document.getElementById('cms-name').value = appData.profile.name || '';
+            document.getElementById('cms-title').value = appData.profile.title || '';
+            document.getElementById('cms-avatar').value = appData.profile.avatar || '';
+            document.getElementById('cms-bio').value = appData.profile.bio || '';
+            document.getElementById('cms-skills').value = (appData.skills || []).join(', ');
+
+            // Contact details
+            const contact = appData.contact || {};
+            document.getElementById('cms-email').value = contact.email || '';
+            document.getElementById('cms-phone').value = contact.phone || '';
+            document.getElementById('cms-location').value = contact.location || '';
+            document.getElementById('cms-github').value = contact.github || '';
+            document.getElementById('cms-linkedin').value = contact.linkedin || '';
+            document.getElementById('cms-instagram').value = contact.instagram || '';
+
+            renderEducationCMSList();
+            renderProjectCMSList();
+            renderExperienceCMSList();
+            renderCertificationCMSList();
+        }
+
+        // Render Education Items in CMS Editor
+        function renderEducationCMSList() {
+            const list = document.getElementById('cms-education-list');
+            list.innerHTML = '';
+            (appData.education || []).forEach((edu, index) => {
+                list.innerHTML += `
+                    <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-2 relative group">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-semibold text-sky-400">Pendidikan #${index + 1}</span>
+                            <button onclick="deleteEducationItem(${index})" class="text-xs text-red-400 hover:text-red-300">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                        <input type="text" value="${edu.institution}" oninput="updateEducation(${index}, 'institution', this.value)" placeholder="Nama Instansi / Universitas" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <input type="text" value="${edu.degree}" oninput="updateEducation(${index}, 'degree', this.value)" placeholder="Gelar / Jurusan" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <input type="text" value="${edu.period}" oninput="updateEducation(${index}, 'period', this.value)" placeholder="Periode (e.g. 2017 - 2021)" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <input type="text" value="${edu.gpa}" oninput="updateEducation(${index}, 'gpa', this.value)" placeholder="IPK / Nilai / Keterangan" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <input type="text" value="${edu.logo}" oninput="updateEducation(${index}, 'logo', this.value)" placeholder="URL Gambar / Foto Kampus" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <textarea oninput="updateEducation(${index}, 'description', this.value)" placeholder="Deskripsi Keterangan Pendidikan" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white" rows="2">${edu.description}</textarea>
+                    </div>
+                `;
+            });
+        }
+
+        // Render Project Items in CMS Editor
+        function renderProjectCMSList() {
+            const list = document.getElementById('cms-project-list');
+            list.innerHTML = '';
+            (appData.projects || []).forEach((proj, index) => {
+                list.innerHTML += `
+                    <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-2 relative group">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-semibold text-sky-400">Proyek #${index + 1}</span>
+                            <button onclick="deleteProjectItem(${index})" class="text-xs text-red-400 hover:text-red-300">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                        <input type="text" value="${proj.title}" oninput="updateProject(${index}, 'title', this.value)" placeholder="Judul Proyek" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <input type="text" value="${proj.category}" oninput="updateProject(${index}, 'category', this.value)" placeholder="Kategori (e.g. Web App)" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <input type="text" value="${proj.tech}" oninput="updateProject(${index}, 'tech', this.value)" placeholder="Teknologi Digunakan" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <input type="text" value="${proj.image}" oninput="updateProject(${index}, 'image', this.value)" placeholder="URL Gambar Proyek" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <input type="text" value="${proj.link}" oninput="updateProject(${index}, 'link', this.value)" placeholder="URL Link Demo Proyek" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <textarea oninput="updateProject(${index}, 'description', this.value)" placeholder="Deskripsi Proyek" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white" rows="2">${proj.description}</textarea>
+                    </div>
+                `;
+            });
+        }
+
+        // Render Experience Items in CMS Editor
+        function renderExperienceCMSList() {
+            const list = document.getElementById('cms-experience-list');
+            list.innerHTML = '';
+            (appData.experiences || []).forEach((exp, index) => {
+                list.innerHTML += `
+                    <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-2 relative group">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-semibold text-sky-400">Pengalaman #${index + 1}</span>
+                            <button onclick="deleteExperienceItem(${index})" class="text-xs text-red-400 hover:text-red-300">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                        <input type="text" value="${exp.role}" oninput="updateExperience(${index}, 'role', this.value)" placeholder="Posisi/Peran" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <input type="text" value="${exp.company}" oninput="updateExperience(${index}, 'company', this.value)" placeholder="Perusahaan" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <input type="text" value="${exp.period}" oninput="updateExperience(${index}, 'period', this.value)" placeholder="Periode (e.g. 2021 - 2023)" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <input type="text" value="${exp.logo}" oninput="updateExperience(${index}, 'logo', this.value)" placeholder="URL Foto/Logo Perusahaan" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <textarea oninput="updateExperience(${index}, 'description', this.value)" placeholder="Deskripsi Tugas" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white" rows="2">${exp.description}</textarea>
+                    </div>
+                `;
+            });
+        }
+
+        // Render Certification Items in CMS Editor
+        function renderCertificationCMSList() {
+            const list = document.getElementById('cms-cert-list');
+            list.innerHTML = '';
+            (appData.certifications || []).forEach((cert, index) => {
+                list.innerHTML += `
+                    <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-2 relative group">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-semibold text-purple-400">Sertifikasi #${index + 1}</span>
+                            <button onclick="deleteCertItem(${index})" class="text-xs text-red-400 hover:text-red-300">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                        <input type="text" value="${cert.title}" oninput="updateCert(${index}, 'title', this.value)" placeholder="Nama Sertifikat" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <input type="text" value="${cert.issuer}" oninput="updateCert(${index}, 'issuer', this.value)" placeholder="Penerbit" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <input type="text" value="${cert.date}" oninput="updateCert(${index}, 'date', this.value)" placeholder="Tanggal Terbit" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <input type="text" value="${cert.certId}" oninput="updateCert(${index}, 'certId', this.value)" placeholder="ID Lisensi/Sertifikat" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                        <input type="text" value="${cert.image}" oninput="updateCert(${index}, 'image', this.value)" placeholder="URL Gambar Sertifikat" class="w-full bg-slate-900 border border-slate-800 rounded p-2 text-xs text-white">
+                    </div>
+                `;
+            });
+        }
+
+        // Data Dynamic Updaters
+        function updateData() {
+            appData.profile.name = document.getElementById('cms-name').value;
+            appData.profile.title = document.getElementById('cms-title').value;
+            appData.profile.avatar = document.getElementById('cms-avatar').value;
+            appData.profile.bio = document.getElementById('cms-bio').value;
+            appData.skills = document.getElementById('cms-skills').value.split(',').map(s => s.trim()).filter(Boolean);
+
+            saveAndSync();
+        }
+
+        function updateContactData() {
+            if (!appData.contact) appData.contact = {};
+            appData.contact.email = document.getElementById('cms-email').value;
+            appData.contact.phone = document.getElementById('cms-phone').value;
+            appData.contact.location = document.getElementById('cms-location').value;
+            appData.contact.github = document.getElementById('cms-github').value;
+            appData.contact.linkedin = document.getElementById('cms-linkedin').value;
+            appData.contact.instagram = document.getElementById('cms-instagram').value;
+
+            saveAndSync();
+        }
+
+        function updateEducation(index, key, val) {
+            appData.education[index][key] = val;
+            saveAndSync();
+        }
+
+        function addEducationItem() {
+            if (!appData.education) appData.education = [];
+            appData.education.push({
+                id: Date.now(),
+                institution: "Nama Instansi / Perguruan Tinggi",
+                degree: "Gelar / Jurusan",
+                period: "2020 - 2024",
+                gpa: "IPK 3.50",
+                description: "Deskripsi kegiatan akademik atau pencapaian.",
+                logo: "https://placehold.co/400x250/1e293b/38bdf8?text=Kampus"
+            });
+            renderEducationCMSList();
+            saveAndSync();
+        }
+
+        function deleteEducationItem(index) {
+            appData.education.splice(index, 1);
+            renderEducationCMSList();
+            saveAndSync();
+        }
+
+        function updateProject(index, key, val) {
+            appData.projects[index][key] = val;
+            saveAndSync();
+        }
+
+        function addProjectItem() {
+            if (!appData.projects) appData.projects = [];
+            appData.projects.push({
+                id: Date.now(),
+                title: "Judul Proyek Baru",
+                category: "Kategori Web/App",
+                tech: "HTML, CSS, JS",
+                description: "Deskripsi singkat aplikasi atau proyek.",
+                image: "https://placehold.co/600x400/1e293b/38bdf8?text=Proyek",
+                link: "#"
+            });
+            renderProjectCMSList();
+            saveAndSync();
+        }
+
+        function deleteProjectItem(index) {
+            appData.projects.splice(index, 1);
+            renderProjectCMSList();
+            saveAndSync();
+        }
+
+        function updateExperience(index, key, val) {
+            appData.experiences[index][key] = val;
+            saveAndSync();
+        }
+
+        function addExperienceItem() {
+            if (!appData.experiences) appData.experiences = [];
+            appData.experiences.push({
+                id: Date.now(),
+                role: "Posisi Baru",
+                company: "Nama Perusahaan",
+                period: "2024",
+                description: "Deskripsi tanggung jawab pekerjaan.",
+                logo: "https://placehold.co/150x150/1e293b/38bdf8?text=Company"
+            });
+            renderExperienceCMSList();
+            saveAndSync();
+        }
+
+        function deleteExperienceItem(index) {
+            appData.experiences.splice(index, 1);
+            renderExperienceCMSList();
+            saveAndSync();
+        }
+
+        function updateCert(index, key, val) {
+            appData.certifications[index][key] = val;
+            saveAndSync();
+        }
+
+        function addCertItem() {
+            if (!appData.certifications) appData.certifications = [];
+            appData.certifications.push({
+                id: Date.now(),
+                title: "Judul Sertifikat Baru",
+                issuer: "Lembaga Penerbit",
+                date: "2024",
+                certId: "ID-123456",
+                image: "https://placehold.co/400x250/1e293b/8b5cf6?text=Sertifikat"
+            });
+            renderCertificationCMSList();
+            saveAndSync();
+        }
+
+        function deleteCertItem(index) {
+            appData.certifications.splice(index, 1);
+            renderCertificationCMSList();
+            saveAndSync();
+        }
+
+        function saveAndSync() {
+            localStorage.setItem('portfolio_cms_data', JSON.stringify(appData));
+            renderPortfolio();
+            renderSplitPreview();
+        }
+
+        function resetData() {
+            if (confirm("Reset seluruh data ke pengaturan awal?")) {
+                appData = JSON.parse(JSON.stringify(initialData));
+                localStorage.setItem('portfolio_cms_data', JSON.stringify(appData));
+                populateCMSForms();
+                renderPortfolio();
+                renderSplitPreview();
+            }
+        }
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            alert("Terima kasih! Pesan Anda telah berhasil dikirim.");
+            e.target.reset();
+        }
+
+        // Render Full Public Portfolio View
+        function renderPortfolio() {
+            // Profile
+            document.getElementById('view-name').innerText = appData.profile.name || '';
+            document.getElementById('view-title').innerText = appData.profile.title || '';
+            document.getElementById('view-avatar').src = appData.profile.avatar || 'https://placehold.co/150x150';
+            document.getElementById('view-bio').innerText = appData.profile.bio || '';
+
+            // Social Media Icons
+            const socialContainer = document.getElementById('view-socials');
+            const contact = appData.contact || {};
+            socialContainer.innerHTML = '';
+            if (contact.github) socialContainer.innerHTML += `<a href="${contact.github}" target="_blank" class="w-10 h-10 rounded-full bg-slate-800 hover:bg-sky-500 hover:text-white flex items-center justify-center text-slate-300 transition-all border border-slate-700"><i class="fa-brands fa-github"></i></a>`;
+            if (contact.linkedin) socialContainer.innerHTML += `<a href="${contact.linkedin}" target="_blank" class="w-10 h-10 rounded-full bg-slate-800 hover:bg-sky-500 hover:text-white flex items-center justify-center text-slate-300 transition-all border border-slate-700"><i class="fa-brands fa-linkedin-in"></i></a>`;
+            if (contact.instagram) socialContainer.innerHTML += `<a href="${contact.instagram}" target="_blank" class="w-10 h-10 rounded-full bg-slate-800 hover:bg-sky-500 hover:text-white flex items-center justify-center text-slate-300 transition-all border border-slate-700"><i class="fa-brands fa-instagram"></i></a>`;
+
+            // Contact Info
+            document.getElementById('view-contact-email').innerText = contact.email || 'Tidak tersedia';
+            document.getElementById('view-contact-phone').innerText = contact.phone || 'Tidak tersedia';
+            document.getElementById('view-contact-location').innerText = contact.location || 'Tidak tersedia';
+
+            // Education Grid
+            const eduContainer = document.getElementById('view-education-grid');
+            eduContainer.innerHTML = '';
+            (appData.education || []).forEach(edu => {
+                eduContainer.innerHTML += `
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-sky-500/50 transition-all glow-effect flex flex-col group">
+                        <div class="h-44 bg-slate-950 overflow-hidden relative">
+                            <img src="${edu.logo}" alt="${edu.institution}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/400x250/1e293b/38bdf8?text=Pendidikan'">
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start gap-2 mb-2">
+                                    <span class="text-xs font-semibold text-sky-400 bg-sky-500/10 px-2.5 py-1 rounded-full border border-sky-500/20">${edu.period}</span>
+                                    <span class="text-xs font-medium text-slate-400">${edu.gpa}</span>
+                                </div>
+                                <h3 class="font-bold text-white text-lg mt-1 mb-1">${edu.degree}</h3>
+                                <p class="text-sm font-semibold text-slate-300 mb-3"><i class="fa-solid fa-graduation-cap text-sky-400 mr-1.5"></i>${edu.institution}</p>
+                                <p class="text-slate-400 text-sm leading-relaxed">${edu.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Projects Grid
+            const projectContainer = document.getElementById('view-projects-grid');
+            projectContainer.innerHTML = '';
+            (appData.projects || []).forEach(proj => {
+                projectContainer.innerHTML += `
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-sky-500/50 transition-all glow-effect flex flex-col group">
+                        <div class="h-48 bg-slate-950 overflow-hidden relative">
+                            <img src="${proj.image}" alt="${proj.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/1e293b/38bdf8?text=Proyek'">
+                            <span class="absolute top-3 right-3 text-[11px] font-semibold text-sky-400 bg-slate-900/90 backdrop-blur-md px-2.5 py-1 rounded-full border border-sky-500/30">${proj.category}</span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-white text-lg mb-1">${proj.title}</h3>
+                                <p class="text-xs text-sky-400 font-mono mb-3"><i class="fa-solid fa-code mr-1"></i>${proj.tech}</p>
+                                <p class="text-slate-400 text-sm leading-relaxed mb-4">${proj.description}</p>
+                            </div>
+                            <a href="${proj.link}" target="_blank" class="inline-flex items-center gap-2 text-xs font-semibold text-sky-400 hover:text-sky-300 transition-colors">
+                                Lihat Demo / Detail <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Experience List
+            const expContainer = document.getElementById('view-experience-list');
+            expContainer.innerHTML = '';
+            (appData.experiences || []).forEach(exp => {
+                expContainer.innerHTML += `
+                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col md:flex-row gap-5 items-start transition-all hover:border-sky-500/50 glow-effect">
+                        <img src="${exp.logo}" alt="${exp.company}" class="w-16 h-16 rounded-xl object-cover bg-slate-800 border border-slate-700 flex-shrink-0" onerror="this.src='https://placehold.co/150x150/1e293b/38bdf8?text=Logo'">
+                        <div class="flex-1">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                                <h3 class="text-lg font-bold text-white">${exp.role}</h3>
+                                <span class="text-xs font-medium text-sky-400 bg-sky-500/10 px-2.5 py-1 rounded-full border border-sky-500/20 w-max">${exp.period}</span>
+                            </div>
+                            <p class="text-sm font-semibold text-slate-300 mb-2">${exp.company}</p>
+                            <p class="text-sm text-slate-400 leading-relaxed">${exp.description}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Certifications Grid
+            const certContainer = document.getElementById('view-certifications-grid');
+            certContainer.innerHTML = '';
+            (appData.certifications || []).forEach(cert => {
+                certContainer.innerHTML += `
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-purple-500/50 transition-all glow-purple flex flex-col">
+                        <div class="h-44 bg-slate-950 overflow-hidden relative">
+                            <img src="${cert.image}" alt="${cert.title}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" onerror="this.src='https://placehold.co/400x250/1e293b/8b5cf6?text=Cert'">
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-white text-base mb-1">${cert.title}</h3>
+                                <p class="text-xs font-medium text-purple-400 mb-3">${cert.issuer}</p>
+                            </div>
+                            <div class="flex items-center justify-between text-xs text-slate-400 pt-3 border-t border-slate-800">
+                                <span><i class="fa-regular fa-calendar mr-1"></i> ${cert.date}</span>
+                                <span class="font-mono text-slate-500">${cert.certId}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Skills Badges
+            const skillsContainer = document.getElementById('view-skills-list');
+            skillsContainer.innerHTML = '';
+            (appData.skills || []).forEach(skill => {
+                skillsContainer.innerHTML += `
+                    <span class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs md:text-sm px-3.5 py-1.5 rounded-full font-medium transition-all">
+                        ${skill}
+                    </span>
+                `;
+            });
+        }
+
+        // Render Mini Live Preview in CMS Split Screen
+        function renderSplitPreview() {
+            const container = document.getElementById('preview-container');
+            const contact = appData.contact || {};
+            container.innerHTML = `
+                <div class="text-center pb-4 border-b border-slate-800">
+                    <img src="${appData.profile.avatar}" class="w-20 h-20 rounded-full mx-auto object-cover border-2 border-sky-400 mb-2">
+                    <h4 class="font-bold text-white text-base">${appData.profile.name || 'Nama'}</h4>
+                    <p class="text-xs text-sky-400">${appData.profile.title || 'Gelar'}</p>
+                </div>
+                
+                <div>
+                    <h5 class="text-xs font-semibold text-slate-400 mb-2 uppercase">Proyek Terbaru</h5>
+                    <div class="space-y-2">
+                        ${(appData.projects || []).slice(0, 2).map(p => `
+                            <div class="p-2.5 bg-slate-950 rounded-lg text-xs border border-slate-800 flex gap-2 items-center">
+                                <img src="${p.image}" class="w-10 h-10 rounded object-cover">
+                                <div class="truncate">
+                                    <p class="font-semibold text-white truncate">${p.title}</p>
+                                    <p class="text-sky-400 text-[10px]">${p.category}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-semibold text-slate-400 mb-2 uppercase">Pendidikan</h5>
+                    <div class="space-y-2">
+                        ${(appData.education || []).slice(0, 1).map(e => `
+                            <div class="p-2.5 bg-slate-950 rounded-lg text-xs border border-slate-800 flex gap-2 items-center">
+                                <img src="${e.logo}" class="w-10 h-10 rounded object-cover">
+                                <div class="truncate">
+                                    <p class="font-semibold text-white truncate">${e.degree}</p>
+                                    <p class="text-sky-400 text-[10px]">${e.institution}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-semibold text-slate-400 mb-2 uppercase">Kontak</h5>
+                    <div class="p-2.5 bg-slate-950 rounded-lg text-[11px] border border-slate-800 space-y-1 text-slate-300">
+                        <p><i class="fa-solid fa-envelope mr-1.5 text-sky-400"></i> ${contact.email || '-'}</p>
+                        <p><i class="fa-solid fa-phone mr-1.5 text-sky-400"></i> ${contact.phone || '-'}</p>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
